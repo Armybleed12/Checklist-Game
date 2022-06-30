@@ -3,7 +3,26 @@ import time
 import random
 from tkinter import messagebox
 from playsound import playsound
+import os
+import openai
 
+
+openai.api_key = "your-own-api-BRO!!"
+openai.Model.list()
+
+
+from newsdataapi import NewsDataApiClient
+
+# API key authorization, Initialize the client with your API key
+
+api = NewsDataApiClient(apikey="pub_84101fb7d799566cd01a6bcd847b01104987")
+
+# You can pass empty or with request parameters {ex. (country = "us")}
+
+response = api.news_api( q= "Las Vegas" , country = "us")
+print(response)
+
+# create a new window to display the 
 
 
 points = 100
@@ -113,6 +132,115 @@ def summitTodaysTasks():
         # update the points label
         TodaysPoints.configure(text="Today's Points Remaining: " + str(remainingPoints))
 
+        print("this is the money response from the AI")
+
+        # run AI to get a response
+        makeMoneyresponse = openai.Completion.create(
+            model="text-davinci-002",
+            prompt="How can I make money while doing " + theTask,
+            temperature=0.9,
+            max_tokens=150,
+            top_p=1,
+            frequency_penalty=1,
+            presence_penalty=1
+            )
+        print(makeMoneyresponse.choices[0].text)
+        # add the AI response to the AI response under time
+        #moneyListBox.insert(tk.END, makeMoneyresponse.choices[0].text)
+        #moneyListBox.grid(row=1, column=0)
+
+        print("this is the Time response from the AI")
+
+        getDoneFasterresponse = openai.Completion.create(
+            model="text-davinci-002",
+            prompt="Brainstorm some unique ideas that can get" + theTask + "done way faster",
+            temperature=0.9,
+            max_tokens=150,
+            top_p=1,
+            frequency_penalty=1,
+            presence_penalty=1
+            )
+        print(getDoneFasterresponse.choices[0].text)
+
+        # add the AI response to the AI response under time
+        TimelistBox.insert(tk.END, getDoneFasterresponse.choices[0].text)
+
+        print("this is the Lazy response from the AI")
+
+        lazyWayresponse = openai.Completion.create(
+            model="text-davinci-002",
+            prompt="Brainstorm some SUPER lazy ways to accomplish" + theTask,
+            temperature=0.9,
+            max_tokens=150,
+            top_p=1,
+            frequency_penalty=1,
+            presence_penalty=1
+            )
+        print(lazyWayresponse.choices[0].text)
+
+        # add the AI response to the AI response under time
+        lazyListBox.insert(tk.END, lazyWayresponse.choices[0].text)
+
+        # fit the AI response to the list box
+        
+
+
+        moneyListBox.grid(row=1, column=0)
+        TimelistBox.grid(row=1, column=1)
+        lazyListBox.grid(row=1, column=2)
+
+        # add moneyresponse to the money window
+        aiResponseLabel = tk.Label(moneyWindow, text=makeMoneyresponse.choices[0].text, font=("Helvetica", 20), fg="black", bg="#ffffff")
+        aiResponseLabel.place(x=30, y=0)
+
+        moneyWayLabel = tk.Label(moneyWindow, text="How to make money doing Your task", font=("Helvetica", 20), fg="black", bg="#ffffff")
+        moneyWayLabel.place(x=00, y=0)
+
+        
+
+        # only allow the aiResponseLabel to be 30 words long and then go the the next line  
+        aiResponseLabel.configure(wraplength=400)
+
+        # add timeresponse to the money window
+        aiResponseLabel2 = tk.Label(moneyWindow, text=getDoneFasterresponse.choices[0].text, font=("Helvetica", 20), fg="black", bg="#ffffff")
+        aiResponseLabel2.place(x=430, y=0)
+
+        timeWayLabel = tk.Label(moneyWindow, text="How to get your task done faster", font=("Helvetica", 20), fg="black", bg="#ffffff")
+        timeWayLabel.place(x=400, y=0)
+
+
+        # only allow the aiResponseLabel to be 30 words long and then go the the next line
+        aiResponseLabel2.configure(wraplength=400)
+
+        # add lazyresponse to the money window
+        aiResponseLabel3 = tk.Label(moneyWindow, text=lazyWayresponse.choices[0].text, font=("Helvetica", 20), fg="black", bg="#ffffff")
+        aiResponseLabel3.place(x=30, y=400)
+
+        lazyWayLabel = tk.Label(moneyWindow, text="Lazy Way", font=("Helvetica", 20), fg="black", bg="#ffffff")
+        lazyWayLabel.place(x=30, y=350)
+
+        # only allow the aiResponseLabel to be 30 words long and then go the the next line
+        aiResponseLabel3.configure(wraplength=400)
+
+
+
+
+        
+
+        
+
+
+
+        askTime = openai.Completion.create(
+            model="text-curie-001",
+            prompt="on a scale of 1-100 how many points show this task of" + theTask + "is worth?",
+            temperature=0.6,
+            max_tokens=150,
+            top_p=1,
+            frequency_penalty=1,
+            presence_penalty=1
+            )
+        print(askTime.choices[0].text)
     
 
     
@@ -154,7 +282,7 @@ def summitTodaysTasks():
 
         # update todaysTasksLabel text
 
-        listBox.insert(tk.END, str(theTask) + " - " + str(currentPoints) + " points")
+        listBox.insert(tk.END, str(theTask) + " - " + str(askTime.choices[0].text) + " points")
     
     
 
@@ -333,5 +461,55 @@ def openAdminsWindowPopup():
 openAdminsWindow = tk.Button(SettingsFrame, text="Admin", font=("Helvetica", 20), fg="black", command=openAdminsWindowPopup)
 openAdminsWindow.place(x=643, y=85)
 
+
+# create a canvas with create 3 columns with a header on each column
+aiCanvas = tk.Canvas(GameWindow, width=1000, height=500, bg="white")
+aiCanvas.place(x=0, y=600)
+
+
+aiCanvas.create_line(0, 0, 1000, 0, fill="black")
+aiCanvas.create_line(0, 0, 0, 500, fill="black")
+aiCanvas.create_line(0, 500, 1000, 500, fill="black")
+aiCanvas.create_line(1000, 0, 1000, 500, fill="black")
+
+aiCanvas.create_line(250, 0, 250, 500, fill="black")
+aiCanvas.create_line(500, 0, 500, 500, fill="black")
+
+aiCanvas.create_text(35, 20, text="Time", font=("Helvetica", 20), fill="black")
+aiCanvas.create_text(285, 20, text="Money", font=("Helvetica", 20), fill="black")
+aiCanvas.create_text(575, 20, text="The Lazy Way", font=("Helvetica", 20), fill="black")
+
+TimelistBox = tk.Listbox(aiCanvas, font=("Helvetica", 20), fg="white", bg="black")
+TimelistBox.place(x=0, y=50)
+# make the listbox scrollable with a scrollbar and keep all text in the listbox
+TimelistScrollbar = tk.Scrollbar(TimelistBox, orient="vertical")
+
+TimelistBox.config(yscrollcommand=TimelistScrollbar.set)
+TimelistScrollbar.config(command=TimelistBox.yview)
+
+
+moneyListBox = tk.Canvas(aiCanvas, width=1000, height=500, bg="white")
+moneyListBox.place(x=250, y=50)
+
+lazyListBox = tk.Listbox(aiCanvas, font=("Helvetica", 20), fg="white", bg="black")
+lazyListBox.place(x=500, y=50)
+
+
+
+
+
+# open a new window called moneyWindow
+moneyWindow = tk.Toplevel()
+moneyWindow.title("Money Window")
+moneyWindow.geometry("300x300")
+
+
+# add label for AI response
+aiResponseLabel = tk.Label(moneyWindow, text="AI Response", font=("Helvetica", 20), fg="black")
+aiResponseLabel.place(x=0, y=0)
+
+
+
 openList()
 GameWindow.mainloop()
+
