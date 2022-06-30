@@ -8,3 +8,6 @@ A 2 player check list game written with the help of Github AI Co-pilot, where yo
 Get points for each time you check off one of your goals! 
 
 <img width="793" alt="Screen Shot 2022-06-08 at 7 22 36 PM" src="https://user-images.githubusercontent.com/89702372/172750609-dac53d35-f7f7-4545-bbeb-5ac5db0fc7c3.png">
+
+
+I updated this to include OpenAI - you will need an API code for this
