@@ -11,16 +11,6 @@ openai.api_key = "your-own-api-BRO!!"
 openai.Model.list()
 
 
-from newsdataapi import NewsDataApiClient
-
-# API key authorization, Initialize the client with your API key
-
-api = NewsDataApiClient(apikey="pub_84101fb7d799566cd01a6bcd847b01104987")
-
-# You can pass empty or with request parameters {ex. (country = "us")}
-
-response = api.news_api( q= "Las Vegas" , country = "us")
-print(response)
 
 # create a new window to display the 
 
